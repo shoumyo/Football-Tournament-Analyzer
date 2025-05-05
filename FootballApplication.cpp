@@ -23,6 +23,9 @@ struct referee{
 
 int main(){
 
+    //opening a file to store the match results
+    ofstream MyFile("Results.txt");
+
     cout<<"WELCOME TO THE FOOTBALL TOURNAMENT PERFORMANCE ANALYZER"<<endl;
     cout<<endl;
     int number;
@@ -34,6 +37,9 @@ int main(){
         cout<<"Name of the "<<x+1<<" Tournament:";
         cin.ignore();
         getline(cin,tournamentName);
+        MyFile<<"Tournament Name:";
+        MyFile<<tournamentName<<endl;   //storing tournament name to the file
+        MyFile<<endl;
         cout<<endl;
 
         cout<<"Welcome to the "<<tournamentName<<" performance analyzer"<<endl;
@@ -100,7 +106,7 @@ int main(){
             for(int j=0;j<3;j++){
                 cout<<"Enter "<<j+1<<" match mistakes:";
                 cin>>ref[i].wrongDecition[j];
-                ref[i].totalWrongDecition+=ref[i].wrongDecition[j];
+                ref[i].totalWrongDecition +=ref[i].wrongDecition[j];
             }
         }
         cout<<endl;
@@ -142,14 +148,14 @@ int main(){
 
         int tieCountofForwards=1;
         for(int a=1;a<forwards;a++){
-            if(striker[0].totalGoals=striker[a].totalGoals){
+            if(striker[0].totalGoals==striker[a].totalGoals){
                 tieCountofForwards++;
             }
         }
         if(tieCountofForwards>1){
             cout<<"There are "<<tieCountofForwards<<" players of same total goals.So we are going to rank them according to public votes"<<endl;
         cout<<endl;
-        double forwardVotes[tieCountofForwards];
+        vector<double>forwardVotes(tieCountofForwards);
         for(int i=0;i<tieCountofForwards;i++){
             cout<<"Enter "<<striker[i].name<<" votes:";
             cin>>forwardVotes[i];
@@ -169,14 +175,14 @@ int main(){
 
         int tieCountofGks=1;
         for(int a=1;a<goalkeepers;a++){
-            if(gk[0].totalSave=gk[a].totalSave){
+            if(gk[0].totalSave==gk[a].totalSave){
                 tieCountofGks++;
             }
         }
         if(tieCountofGks>1){
             cout<<"There are "<<tieCountofGks<<" players of same total saves.So we are going to rank them according to public votes"<<endl;
         cout<<endl;
-        double gkVotes[tieCountofGks];
+        vector<double>gkVotes(tieCountofGks);
         for(int i=0;i<tieCountofGks;i++){
             cout<<"Enter "<<gk[i].name<<" votes:";
             cin>>gkVotes[i];
@@ -196,14 +202,14 @@ int main(){
 
         int tieCountofRefs=1;
         for(int a=1;a<referees;a++){
-            if(ref[0].totalWrongDecition=ref[a].totalWrongDecition){
+            if(ref[0].totalWrongDecition==ref[a].totalWrongDecition){
                 tieCountofRefs++;
             }
         }
         if(tieCountofRefs>1){
             cout<<"There are "<<tieCountofRefs<<" players of same total Wrong Decition.So we are going to rank them according to public votes"<<endl;
         cout<<endl;
-        double refVotes[tieCountofRefs];
+        vector<double> refVotes(tieCountofRefs);
         for(int i=0;i<tieCountofGks;i++){
             cout<<"Enter "<<ref[i].name<<" votes:";
             cin>>refVotes[i];
@@ -220,126 +226,173 @@ int main(){
         }
 
         //output
+        //storing every output to file from this section
 
         if(forwards>0){
             cout<<"Forwards Ranking"<<endl;
+            MyFile<<"Forwards Ranking"<<endl;
         cout<<endl;
+        MyFile<<endl;
 
         //name 20 spacing
         //goals 7 spacing
         //total 10 spacing
 
         cout<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Totalgoals"<<endl;
+        MyFile<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Totalgoals"<<endl;
         
         for(int i=0;i<forwards;i++){
             cout<<i+1;
+            MyFile<<i+1;
             for(int l=1;l<=9-to_string(i+1).length();l++){
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<striker[i].name;
+            MyFile<<striker[i].name;
             for(int j=1;j<=30-striker[i].name.length();j++){    //for a good output
                 //giving all name the same spacing
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<"  ";
+            MyFile<<"  ";
             for(int j=0;j<3;j++){
                 cout<<striker[i].goals[j];
+                MyFile<<striker[i].goals[j];
                 for(int k=1;k<=7-to_string(striker[i].goals[j]).length();k++){  //for a beautiful output
                     //turning int value to string and calculating it's length
                     cout<<" ";
+                    MyFile<<" ";
                 }
                 cout<<"  ";
+                MyFile<<"  ";
             }
             cout<<striker[i].totalGoals<<endl;
+            MyFile<<striker[i].totalGoals<<endl;
 
         }
         cout<<endl<<endl;
+        MyFile<<endl<<endl;
         }
 
         if(goalkeepers>0){
             cout<<"Goalkeepers Ranking"<<endl;
         cout<<endl;
+        MyFile<<"Goalkeepers Ranking"<<endl;
+        MyFile<<endl;
 
         //name 20 spacing
         //goals 7 spacing
         //total 10 spacing
 
         cout<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Totalsaves"<<endl;
+        MyFile<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Totalsaves"<<endl;
         
         for(int i=0;i<goalkeepers;i++){
             cout<<i+1;
+            MyFile<<i+1;
             for(int l=1;l<=9-to_string(i+1).length();l++){
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<gk[i].name;
+            MyFile<<gk[i].name;
             for(int j=1;j<=30-gk[i].name.length();j++){    //for a good output
                 //giving all name the same spacing
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<"  ";
+            MyFile<<"  ";
             for(int j=0;j<3;j++){
                 cout<<gk[i].save[j];
+                MyFile<<gk[i].save[j];
                 for(int k=1;k<=7-to_string(gk[i].save[j]).length();k++){  //for a beautiful output
                     //turning int value to string and calculating it's length
                     cout<<" ";
+                    MyFile<<" ";
                 }
                 cout<<"  ";
+                MyFile<<"  ";
             }
             cout<<gk[i].totalSave<<endl;
+            MyFile<<gk[i].totalSave<<endl;
 
         }
         cout<<endl<<endl;
+        MyFile<<endl<<endl;
         }
 
         if(referees>0){
             cout<<"Referees Ranking"<<endl;
         cout<<endl;
+        MyFile<<"Referees Ranking"<<endl;
+        MyFile<<endl;
 
         //name 30 spacing
         //goals 7 spacing
         //total 10 spacing
 
         cout<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Total Wrong Decision"<<endl;
+        MyFile<<"Ranking"<<"  "<<"Name"<<"                          "<<"  "<<"Match 1"<<"  "<<"Match 2"<<"  "<<"Match 3"<<"  "<<"Total Wrong Decision"<<endl;
         
         for(int i=0;i<referees;i++){
-            cout<<i+1<<"  ";
+            cout<<i+1;
+            MyFile<<i+1;
             for(int l=1;l<=9-to_string(i+1).length();l++){
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<ref[i].name;
+            MyFile<<ref[i].name;
             for(int j=1;j<=30-ref[i].name.length();j++){    //for a good output
                 //giving all name the same spacing
                 cout<<" ";
+                MyFile<<" ";
             }
             cout<<"  ";
+            MyFile<<"  ";
             for(int j=0;j<3;j++){
                 cout<<ref[i].wrongDecition[j];
+                MyFile<<ref[i].wrongDecition[j];
                 for(int k=1;k<=7-to_string(ref[i].wrongDecition[j]).length();k++){  //for a beautiful output
                     //turning int value to string and calculating it's length
                     cout<<" ";
+                    MyFile<<" ";
                 }
                 cout<<"  ";
+                MyFile<<"  ";
             }
             cout<<ref[i].totalWrongDecition<<endl;
+            MyFile<<ref[i].totalWrongDecition<<endl;
 
         }
         cout<<endl<<endl;
+        MyFile<<endl<<endl;
         }
 
         cout<<endl;
+        MyFile<<endl;
         //Highlighting the best plater of the tournament
         cout<<"The best player of the "<<tournamentName<<" is:";
+        MyFile<<"The best player of the "<<tournamentName<<" is:";
         if(striker[0].totalGoals>gk[0].totalSave){
             cout<<striker[0].name<<endl;
+            MyFile<<striker[0].name<<endl;
         }
         else if(striker[0].totalGoals=gk[0].totalSave){
             cout<<striker[0].name<<" & "<<gk[0].name;
+            MyFile<<striker[0].name<<" & "<<gk[0].name;
         }
         else{
             cout<<gk[0].name<<endl;
+            MyFile<<gk[0].name<<endl;
         }
-        cout<<endl;
+        cout<<endl<<endl;
+        MyFile<<endl<<endl;
     }
+    MyFile.close();
 
     return 0;
 }
